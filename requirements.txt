@@ -1,0 +1,2 @@
+numpy==1.23.0
+pylorentz==0.3.3
