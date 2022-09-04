@@ -1,4 +1,3 @@
-from EventPlotter import particle
 import numpy as np
 
 

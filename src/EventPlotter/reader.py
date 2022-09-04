@@ -1,8 +1,6 @@
 """
 
 """
-from EventPlotter import particle
-from EventPlotter import event
 
 
 class Reader():
@@ -28,11 +26,12 @@ class Reader():
 class ReaderLHEF(Reader):
 
     def read_next(self, verbose: bool = False):
-
+        return 0
 
 class ReaderPythia(Reader):
 
     def read_next(self, verbose: bool = False):
+        return 0
 #        particles = []
 #        with open(file_in) as fstream:
 #            for x in fstream.readlines():

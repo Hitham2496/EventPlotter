@@ -5,13 +5,15 @@ from typing import Tuple
 
 class Particle():
 
+    TOL = 1E-3
+
     def __init__(
             self, pdg: int = 0, status: int = 0,
             mothers: Tuple[int, int] = (0, 0),
             daughters: Tuple[int, int] = (0, 0),
             cols: Tuple[int, int] = (0, 0),
             px: float = 0., py: float = 0., pz: float = 0., e: float = 0.,
-            m: float = 0., check_on_shell: bool: True
+            m: float = 0., check_on_shell: bool=True
             ):
         """
         Initialise particle from provided data, most of which is optional.
@@ -45,25 +47,25 @@ class Particle():
         Calculate mass from momentum.
         """
         p = self.momentum
-        return np.sqrt(p.e()**2 - p.px()**2 - p.py()**2 - p.pz()**2)
+        return np.sqrt(p.e**2 - p.p_x**2 - p.p_y**2 - p.p_z**2)
 
     def rap(self):
         """
-        Wrapper around rapidity form pylorentz.
+        Wrapper around rapidity from pylorentz.
         """
         p = self.momentum
-        return 0.5 * np.log((p.e() + p.p_z)/(p.e() - p.p_z))
+        return 0.5 * np.log((p.e() + p.p_z())/(p.e() - p.p_z()))
 
     def phi(self):
         """
-        Wrapper around phi form pylorentz.
+        Wrapper around phi from pylorentz.
         """
         p = self.momentum
         return np.arctan2(p.p_y, p.p_x)
 
     def perp(self):
         """
-        Wrapper around p_T form pylorentz.
+        Wrapper around p_T from pylorentz.
         """
         p = self.momentum
         return np.sqrt(p.p_x**2 + p.p_y**2)
@@ -110,11 +112,15 @@ class Particle():
         """
         return (self.status < 0)
 
-    def check_on_shell(self, tol: float = 1E-3):
+    def check_on_shell(self):
         """
         Checks on-shellness of the particle compared to the init mass to
         within a tolerance set to 1E-3 by default.
         """
         calc = self.m_calc()
-        if(np.abs((calc - self.m()) / self.m()) > tol):
-            raise(ValueError("Particle is not on shell"))
+        if (self.m == 0.):
+            if (np.abs(calc) > Particle.TOL):
+                raise(ValueError("Particle is not on shell"))
+        else:
+            if (np.abs((calc - self.m) / self.m) > Particle.TOL):
+                raise(ValueError("Particle is not on shell"))
