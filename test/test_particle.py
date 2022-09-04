@@ -41,16 +41,15 @@ def test_momentum_wrapper(part: Particle):
 @pytest.mark.parametrize("part, rap_control", [
     (A, np.inf),
     (B, -np.inf),
-    (C, -0.5596),
+    (C, -0.27980),
 ])
 def test_rapidity(part: Particle, rap_control: float):
 
     if (part.e() == part.pz()):
-        assert np.abs(part.rap()) == np.inf
+        assert part.rap() == np.inf
 
-    if ( (part.e() + part.pz()) / (part.e() - part.pz()) ):
-        with pytest.raises(ValueError):
-            part.rap()
+    if (part.e() == -part.pz()):
+        assert part.rap() == -np.inf
 
     assert part.rap() == pytest.approx(rap_control, Particle.TOL)
 
