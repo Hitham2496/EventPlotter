@@ -54,7 +54,12 @@ class Particle():
         Wrapper around rapidity from pylorentz.
         """
         p = self.momentum
-        return 0.5 * np.log((p.e() + p.p_z())/(p.e() - p.p_z()))
+        if (p.e - p.p_z == 0.):
+            return np.inf
+        elif (p.e + p.p_z == 0.):
+            return -np.inf
+
+        return 0.5 * np.log((p.e + p.p_z)/(p.e - p.p_z))
 
     def phi(self):
         """
@@ -121,6 +126,9 @@ class Particle():
         if (self.m == 0.):
             if (np.abs(calc) > Particle.TOL):
                 raise(ValueError("Particle is not on shell"))
-        else:
-            if (np.abs((calc - self.m) / self.m) > Particle.TOL):
+
+        elif (self.m < -Particle.TOL):
+            raise(ValueError("Particle has negative mass as input"))
+
+        elif (np.abs((calc - self.m) / self.m) > Particle.TOL):
                 raise(ValueError("Particle is not on shell"))
