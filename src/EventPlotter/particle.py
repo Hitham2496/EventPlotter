@@ -5,7 +5,8 @@ from typing import Tuple
 
 class Particle():
 
-    TOL = 1E-3
+    # Review value of tolerance
+    TOL = 1E-1
 
     def __init__(
             self, pdg: int = 0, status: int = 0,
@@ -123,12 +124,15 @@ class Particle():
         within a tolerance set to 1E-3 by default.
         """
         calc = self.m_calc()
-        if (self.m == 0.):
-            if (np.abs(calc) > Particle.TOL):
-                raise(ValueError("Particle is not on shell"))
 
-        elif (self.m < -Particle.TOL):
+        if (self.m < 0.):
             raise(ValueError("Particle has negative mass as input"))
 
-        elif (np.abs((calc - self.m) / self.m) > Particle.TOL):
+        elif (self.m == 0.):
+            if (np.abs(calc) > Particle.TOL):
                 raise(ValueError("Particle is not on shell"))
+            else:
+                return
+
+        elif (np.abs((calc - self.m) / self.m) > Particle.TOL):
+            raise(ValueError("Particle is not on shell"))
