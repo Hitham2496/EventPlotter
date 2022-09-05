@@ -1,18 +1,19 @@
 import pytest
 import numpy as np
+import pylorentz
 from EventPlotter import Particle
 
 A = Particle(21, status=-1, px=0, py=0, pz=200, e=200)
 
-B = Particle(21, status=-1, px=0, py=0, pz=-350, e=350)
+B = Particle(12, status=-1, px=0, py=0, pz=-350, e=350)
 
-C = Particle(21, status=1, px=0, py=0, pz=-150, e=550, m=529.15)
+C = Particle(1, status=1, px=0, py=0, pz=-150, e=550, m=529.15)
 
-D = Particle(21, status=1, px=-2.026831e+01, py=-1.871849e+01,
-             pz=-1.510034e+02, e=1.535032e+02, m=0.139) # y = -2.4013
+D = Particle(22, status=1, px=-2.026831e+01, py=-1.871849e+01,
+             pz=-1.510034e+02, e=1.535032e+02, m=0.139)
 
-E = Particle(-21, status=1, px=-6.838323e+00, py=-3.602227e+02, 
-             pz=1.114048e+02, e=3.771183e+02, m=0.167) #y = 0.3045
+E = Particle(-11, status=1, px=-6.838323e+00, py=-3.602227e+02, 
+             pz=1.114048e+02, e=3.771183e+02, m=0.167) 
 
 
 @pytest.mark.parametrize("part", [
@@ -24,6 +25,18 @@ E = Particle(-21, status=1, px=-6.838323e+00, py=-3.602227e+02,
 ])
 def test_on_shell(part: Particle):
     assert part.m_calc() == pytest.approx(part.m, Particle.TOL)
+
+
+@pytest.mark.parametrize("part, out_status, is_parton", [
+    (A, False, True),
+    (B, False, False),
+    (C, True, True),
+    (D, True, False),
+])
+def test_metadata(part: Particle, out_status: bool, is_parton: bool):
+    assert part.is_final() == out_status
+    assert part.is_incoming() is not (part.is_final())
+    assert part.is_parton() == is_parton
 
 
 def test_off_shell():
@@ -55,10 +68,13 @@ def test_off_shell():
 ])
 def test_momentum_wrapper(part: Particle):
 
-    assert part.e() == part.momentum.e
-    assert part.px() == part.momentum.p_x
-    assert part.py() == part.momentum.p_y
-    assert part.pz() == part.momentum.p_z
+    p = part.momentum
+    assert isinstance(p, pylorentz.Momentum4)
+    assert part.e() == p.e
+    assert part.px() == p.p_x
+    assert part.py() == p.p_y
+    assert part.pz() == p.p_z
+    assert part.phi() == p.phi
 
 
 @pytest.mark.parametrize("part, rap_control", [
