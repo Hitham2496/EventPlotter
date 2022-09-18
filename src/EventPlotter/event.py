@@ -1,5 +1,5 @@
 import numpy as np
-
+import pylorentz
 
 class Event():
 
@@ -27,13 +27,24 @@ class Event():
         self.muf = muf
         self.wgt = wgt
         self.find_incoming()
-        self.check_momentum()
+        if (not self.check_momentum()):
+            raise(ValueError("""Momentum not conserved in event"""))
+
         if (set_info):
             self.setup()
             return
 
         self.x_plus = x_plus
         self.x_minus = x_minus
+
+    def __str__(self):
+        rep = "-"*10+"EventPlotter event listing"+"-"*10
+        rep += "\nno.\tid\tstatus\tmomentum (px, py, pz, e)"
+        for idx, p in enumerate(self.particles):
+            rep += "\n"+str(idx)+"\t"+str(p.pdg)+"\t"+str(p.status)+"\t("+str(p.px())
+            rep += ",\t"+str(p.py())+",\t"+str(p.pz())+",\t"+str(p.e())+")"
+        return rep
+
 
     def find_incoming(self):
         """
@@ -55,8 +66,8 @@ class Event():
                     incoming[0] = idx
                 elif (side == -1):
                     incoming[1] = idx
-                # else:
-                #   raise(ValueError("Incoming particle"))
+                else:
+                    raise(ValueError("Incoming particle has non-zero transverse momentum"))
             if (incoming[0] != -1 and incoming[1] != -1):
                 self.incoming = incoming
                 return
@@ -79,7 +90,8 @@ class Event():
         Calculates the hard interaction CoM energy of an event.
         """
         inc = self.incoming
-        p_ini = self.particles[inc[0]].momentum
+        p_ini = pylorentz.Momentum4(0., 0., 0., 0.)
+        p_ini += self.particles[inc[0]].momentum
         p_ini += self.particles[inc[1]].momentum
         if (p_ini.p_z == 0. or p_ini.e == 0. or p_ini.p_t != 0):
             raise(ValueError("""Event does not contain incoming particles
@@ -109,7 +121,8 @@ class Event():
         """
         inc = self.incoming
         EPS = 1E-2
-        p_check = self.particles[inc[0]].momentum
+        p_check = pylorentz.Momentum4(0., 0., 0., 0.)
+        p_check += self.particles[inc[0]].momentum
         p_check += self.particles[inc[1]].momentum
         for idx, part in enumerate(self.particles):
             if (part.is_final()):
@@ -117,4 +130,6 @@ class Event():
 
         for comp in p_check:
             if (abs(comp) > EPS):
-                raise(ValueError("""Momentum not conserved in event"""))
+                return False
+
+        return True
