@@ -48,7 +48,7 @@ class Particle():
         Calculate mass from momentum.
         """
         p = self.momentum
-        return np.sqrt(p.e**2 - p.p_x**2 - p.p_y**2 - p.p_z**2)
+        return np.sqrt(np.abs(p.e**2 - p.p_x**2 - p.p_y**2 - p.p_z**2))
 
     def rap(self):
         """
