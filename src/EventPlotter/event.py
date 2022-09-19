@@ -57,7 +57,7 @@ class Event():
             if (part.is_incoming() and part.e() == self.root_s / 2.):
                 if (part.pz() > 0.):
                     beams[0] = idx
-                elif (part.pz() < 0.):
+                if (part.pz() < 0.):
                     beams[1] = idx
             elif ((part.is_incoming()) and (part.perp() == 0.)
                   and (part.pz() != 0.) and (part.e() != 0.)):
@@ -66,9 +66,10 @@ class Event():
                     incoming[0] = idx
                 elif (side == -1):
                     incoming[1] = idx
-                else:
-                    raise(ValueError("Incoming particle has non-zero transverse momentum"))
+            else:
+                raise(ValueError("Incoming particle has non-zero transverse momentum"))
             if (incoming[0] != -1 and incoming[1] != -1):
+                self.beams = beams
                 self.incoming = incoming
                 return
         if (incoming[0] == -1 or incoming[1] == -1):
