@@ -5,7 +5,8 @@ from typing import Tuple
 
 class Particle():
 
-    TOL = 1E-3
+    # Review value of tolerance
+    TOL = 1E-1
 
     def __init__(
             self, pdg: int = 0, status: int = 0,
@@ -47,14 +48,19 @@ class Particle():
         Calculate mass from momentum.
         """
         p = self.momentum
-        return np.sqrt(p.e**2 - p.p_x**2 - p.p_y**2 - p.p_z**2)
+        return np.sqrt(np.abs(p.e**2 - p.p_x**2 - p.p_y**2 - p.p_z**2))
 
     def rap(self):
         """
         Wrapper around rapidity from pylorentz.
         """
         p = self.momentum
-        return 0.5 * np.log((p.e() + p.p_z())/(p.e() - p.p_z()))
+        if (p.e - p.p_z == 0.):
+            return np.inf
+        elif (p.e + p.p_z == 0.):
+            return -np.inf
+
+        return 0.5 * np.log((p.e + p.p_z)/(p.e - p.p_z))
 
     def phi(self):
         """
@@ -118,9 +124,15 @@ class Particle():
         within a tolerance set to 1E-3 by default.
         """
         calc = self.m_calc()
-        if (self.m == 0.):
+
+        if (self.m < 0.):
+            raise(ValueError("Particle has negative mass as input"))
+
+        elif (self.m == 0.):
             if (np.abs(calc) > Particle.TOL):
                 raise(ValueError("Particle is not on shell"))
-        else:
-            if (np.abs((calc - self.m) / self.m) > Particle.TOL):
-                raise(ValueError("Particle is not on shell"))
+            else:
+                return
+
+        elif (np.abs((calc - self.m) / self.m) > Particle.TOL):
+            raise(ValueError("Particle is not on shell"))
