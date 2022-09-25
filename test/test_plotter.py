@@ -22,21 +22,49 @@ plots = Plotter(rap_extent=[-4.5, 4.5], bins=50, chosen_map="cividis",
                 custom_z_axis=lambda part: part.e(),
                 z_label=r"$E/p_\perp$", include_wgt=True)
 
+
+def test_init__errors():
+    # test inappropriate types for extents
+    with pytest.raises(TypeError):
+        plotting_invalid_rap = Plotter(rap_extent=4.5)
+    with pytest.raises(TypeError):
+        plotting_invalid_rap = Plotter(rap_extent=[4.5, 3.2, 2.1])
+    with pytest.raises(TypeError):
+        plotting_invalid_rap = Plotter(rap_extent=[4.5, "test"])
+    with pytest.raises(TypeError):
+        plotting_invalid_phi = Plotter(phi_extent=3.1)
+    with pytest.raises(TypeError):
+        plotting_invalid_phi = Plotter(phi_extent=[6.4, -3.2, 2.1])
+    with pytest.raises(TypeError):
+        plotting_invalid_phi = Plotter(phi_extent=[2.4, "test"])
+
+    # test value error for |phi| > pi
+    with pytest.raises(ValueError):
+        plotting_invalid_phi = Plotter(phi_extent=[-4, 4])
+
+    # test inappropriate bins
+    with pytest.raises(TypeError):
+        plotting_invalid_bins = Plotter(bins="test")
+    with pytest.raises(ValueError):
+        plotting_invalid_bins = Plotter(bins=-12)
+
+    # test value error for min_val
+    with pytest.raises(ValueError):
+        plotting_invalid_phi = Plotter(min_val=-10)
+
+
 def test_get_image():
 
     image, products = plots.get_image(event_balanced_beams, [7,8])
     image_no_products = plots.get_image(event_balanced_beams)
 
-    assert type(image) == np.ndarray
+    assert isinstance(image, np.ndarray)
+    assert isinstance(image_no_products, np.ndarray)
+    assert np.array_equal(image, image_no_products)
     assert image.shape == (50, 50)
     assert len(products) == 2
-    assert type(products) == list
-
-    for part in products:
-        assert type(part) == Particle
-
-#print(products)
-
-#plots.plot_y_phi(image, products)
-#plots.plot_y_phi(image_no_products)
+    assert isinstance(products, list)
+    
+    plots.plot_y_phi(image, products)
+    plots.plot_y_phi(image_no_products)
 
