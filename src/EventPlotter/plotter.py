@@ -5,6 +5,7 @@ import numpy as np
 from typing import Tuple
 from .particle import Particle
 from .event import Event
+from .utils import *
 import sys
 
 class Plotter():
@@ -41,7 +42,7 @@ class Plotter():
                 raise(TypeError("Rapidity extent must have two components only"))
             else:
                 for bound in rap_extent:
-                    if (not (isinstance(bound, float) or (isinstance(bound, int)))):
+                    if (not is_number(bound)):
                         raise(TypeError("Rapidity bounds must be float or int")) 
             self.rap_extent = sorted(rap_extent)
         else:
@@ -53,7 +54,7 @@ class Plotter():
                 raise(TypeError("Phi extent must have two components only"))
             else:
                 for bound in phi_extent:
-                    if (not (isinstance(bound, float) or (isinstance(bound, int)))):
+                    if (not is_number(bound)):
                         raise(TypeError("Phi bounds must be float or int"))
                     elif (np.abs(bound) >= np.pi):
                         raise(ValueError("Phi bound must be in (-pi, pi)"))
@@ -62,7 +63,7 @@ class Plotter():
         else:
             raise(TypeError("Phi extent must be 2 component array-like"))
 
-        if (not (isinstance(bins, int) or isinstance(bins, float))):
+        if (not is_number(bound)):
             raise(TypeError("Number of bins must be int"))
         elif (bins < 1):
             raise(ValueError("Number of bins must be larger than 0"))
