@@ -6,7 +6,6 @@ from typing import Tuple
 from .particle import Particle
 from .event import Event
 import sys
-np.set_printoptions(threshold=sys.maxsize)
 
 class Plotter():
 
@@ -25,20 +24,49 @@ class Plotter():
         """
         Initialise Plotter class, arguments:
             rap_extent: tuple for the limits along the rapidity axis.
-            phi_extent: tuple for the limits along the phi axis.
+            phi_extent: tuple for the limits along the phi axis (-pi, pi).
             bins: number of bins along each axis.
             chosen_map: string denoting the matplotlib colour map to be used.
             min_val: minimum value between 0 and 256 for colour map, beneath which
                      the colour will be set as white.
-            custom_z_axis: optional, Callable function of four momenta to use as
+            custom_z_axis: optional, Callable function of Particle objetc to use as
                            the z-axis of the 3d plot, by default the pT of the
                            particle is used.
             z_label: custom label for the z-axis, by default set to $p_\perp$
             include_weight: whether to multiply the z-axis value by the event
                             weight
         """
-        self.rap_extent = sorted(rap_extent)
-        self.phi_extent = sorted(phi_extent)
+        if (isinstance(rap_extent, list) or isinstance(rap_extent, Tuple)):
+            if (len(rap_extent) != 2):
+                raise(TypeError("Rapidity extent must have two components only"))
+            else:
+                for bound in rap_extent:
+                    if (not (isinstance(bound, float) or (isinstance(bound, int)))):
+                        raise(TypeError("Rapidity bounds must be float or int")) 
+            self.rap_extent = sorted(rap_extent)
+        else:
+            raise(TypeError("Rapidity extent must be 2 component array-like"))
+
+
+        if (isinstance(phi_extent, list) or isinstance(phi_extent, Tuple)):
+            if (len(phi_extent) != 2):
+                raise(TypeError("Phi extent must have two components only"))
+            else:
+                for bound in phi_extent:
+                    if (not (isinstance(bound, float) or (isinstance(bound, int)))):
+                        raise(TypeError("Phi bounds must be float or int"))
+                    elif (np.abs(bound) >= np.pi):
+                        raise(ValueError("Phi bound must be in (-pi, pi)"))
+
+            self.phi_extent = sorted(phi_extent)
+        else:
+            raise(TypeError("Phi extent must be 2 component array-like"))
+
+        if (not (isinstance(bins, int) or isinstance(bins, float))):
+            raise(TypeError("Number of bins must be int"))
+        elif (bins < 1):
+            raise(ValueError("Number of bins must be larger than 0"))
+
         self.bins = int(bins)
         self.z_func = custom_z_axis
         self.z_label = z_label
@@ -134,7 +162,7 @@ class Plotter():
                            self.phi_extent[1]], cmap=self.color_map)
 
         bar = plt.colorbar()
-        if (products is not None):
+        if (products):
             for pt in products:
                 plt.scatter(pt[1], pt[2], c="black", marker='x')
                 plt.annotate(r"id="+str(round(np.abs(pt[0]))), (pt[1]+0.1, pt[2]+0.1))
