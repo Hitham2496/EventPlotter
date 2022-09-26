@@ -10,7 +10,6 @@ import sys
 
 class Plotter():
 
-
     def __init__(
                  self,
                  rap_extent: Tuple[float, float] = (-7,7),
@@ -37,6 +36,7 @@ class Plotter():
             include_weight: whether to multiply the z-axis value by the event
                             weight
         """
+        # check rapidity extent is valid
         if (isinstance(rap_extent, list) or isinstance(rap_extent, Tuple)):
             if (len(rap_extent) != 2):
                 raise(TypeError("Rapidity extent must have two components only"))
@@ -49,6 +49,7 @@ class Plotter():
             raise(TypeError("Rapidity extent must be 2 component array-like"))
 
 
+        # check phi extent is valid
         if (isinstance(phi_extent, list) or isinstance(phi_extent, Tuple)):
             if (len(phi_extent) != 2):
                 raise(TypeError("Phi extent must have two components only"))
@@ -63,14 +64,27 @@ class Plotter():
         else:
             raise(TypeError("Phi extent must be 2 component array-like"))
 
-        if (not is_number(bound)):
+        # check bins is int-like >= 1
+        if (not is_number(bins)):
             raise(TypeError("Number of bins must be int"))
         elif (bins < 1):
             raise(ValueError("Number of bins must be larger than 0"))
 
+        # check z_label is str
+        if (not isinstance(z_label, str)):
+            raise(TypeError("z label must be a string"))
+
+        # check chosen_map is str
+        if (not isinstance(chosen_map, str)):
+            raise(TypeError("chosen color map must be a string"))
+
+        # check include_wgt is bool
+        if (not isinstance(include_wgt, bool)):
+            raise(TypeError("include_wgt must be a bool"))
+
         self.bins = int(bins)
         self.z_func = custom_z_axis
-        self.z_label = z_label
+        self.z_label = z_label 
         self.include_wgt = include_wgt
         self.get_colormap(chosen_map, min_val)
 
@@ -78,7 +92,8 @@ class Plotter():
     def get_colormap(self, chosen_map: str="YlOrRd", min_val: int=1):
         """
         Sets a chosen color map for the z-axis with all values beneath
-        min_val/256 as white.
+        min_val/256 as white. Can be called again with new arguments
+        after initialisation for alteration.
         """
         if (min_val < 0 or min_val > 256):
             raise(ValueError("Minimum value in colormap must be between 0 and 256"))
@@ -103,13 +118,17 @@ class Plotter():
             for idx, p in enumerate(event.particles):
                 if (p.is_final() and p.is_parton()):
                     fill_val = self.z_func(p) if (self.z_func) else p.perp()
+                    if (not is_number(fill_val)):
+                        raise(TypeError("custom z function must return a float or int"))
                     fill_val *= event.wgt if (self.include_wgt) else 1
                     y_phi.append([idx, p.rap(), p.phi(), fill_val])
         else:
             for idx, p in enumerate(event.particles):
                 if (p.is_final() and p.is_parton()
                     and (idx not in idx_products)):
-                    fill_val = float(self.z_func(p)) if (self.z_func) else p.perp()
+                    fill_val = self.z_func(p) if (self.z_func) else p.perp()
+                    if (not is_number(fill_val)):
+                        raise(TypeError("custom z function must return a float or int"))
                     fill_val *= event.wgt if (self.include_wgt) else 1
                     y_phi.append([idx, p.rap(), p.phi(), fill_val])
 
@@ -131,6 +150,8 @@ class Plotter():
             for loc in idx_products:
                 p = event.particles[loc]
                 fill_val = self.z_func(p) if (self.z_func) else p.perp()
+                if (not is_number(fill_val)):
+                    raise(TypeError("custom z function must return a float or int"))
                 fill_val *= event.wgt if (self.include_wgt) else 1
                 y_phi_products.append([p.pdg, p.rap(), p.phi(), fill_val])
 
@@ -141,7 +162,7 @@ class Plotter():
         return image
 
 
-    def plot_y_phi(self, image, products = None, title: str = "event.pdf"):
+    def plot_y_phi(self, image = None, products = None, title: str = "event.pdf"):
         """
         Renders a square heatmap of the y-phi plane given:
             image: a (bins x bins) dimensional numpy array
