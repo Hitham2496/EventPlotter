@@ -22,6 +22,14 @@ plots = Plotter(rap_extent=[-4.5, 4.5], bins=50, chosen_map="cividis",
                 custom_z_axis=lambda part: part.e(),
                 z_label=r"$E/p_\perp$", include_wgt=True)
 
+plots_invalid_func = Plotter(rap_extent=[-4.5, 4.5], bins=50, chosen_map="cividis",
+                             custom_z_axis=lambda part: "bad return value",
+                             z_label=r"$E/p_\perp$", include_wgt=True)
+
+plots_invalid_func_prod = Plotter(rap_extent=[-4.5, 4.5], bins=50, chosen_map="cividis",
+                                  custom_z_axis=lambda part: 0. if (part.pdg != 11) else "x",
+                                  z_label=r"$E/p_\perp$", include_wgt=True)
+
 
 def test_init__errors():
     # test inappropriate types for extents
@@ -52,19 +60,48 @@ def test_init__errors():
     with pytest.raises(ValueError):
         plotting_invalid_phi = Plotter(min_val=-10)
 
+    # test inappropriate colormap string
+    with pytest.raises(TypeError):
+        plotting_invalid_bins = Plotter(chosen_map=6)
+
+    # test inappropriate z label string
+    with pytest.raises(TypeError):
+        plotting_invalid_bins = Plotter(z_label=4)
+
+    # test inappropriate include_wgt
+    with pytest.raises(TypeError):
+        plotting_invalid_bins = Plotter(include_wgt="True")
+
 
 def test_get_image():
 
     image, products = plots.get_image(event_balanced_beams, [7,8])
     image_no_products = plots.get_image(event_balanced_beams)
+    image_no_beams = plots.get_image(event_balanced)
 
-    assert isinstance(image, np.ndarray)
-    assert isinstance(image_no_products, np.ndarray)
+    # check the image output with/without beams/products is the same
     assert np.array_equal(image, image_no_products)
+    assert np.array_equal(image, image_no_beams)
+
+    # check the image shape and the length of the products list
     assert image.shape == (50, 50)
-    assert len(products) == 2
     assert isinstance(products, list)
-    
+    assert len(products) == 2
+
+    # check type error is raised for invalid z function values
+    with pytest.raises(TypeError):
+        image_invalid = plots_invalid_func.get_image(event_balanced)
+    with pytest.raises(TypeError):
+        image_invalid = plots_invalid_func.get_image(event_balanced, [5, 6])
+
+    # check for an invalid z function that affects only the products
+    with pytest.raises(TypeError):
+        image_invalid = plots_invalid_func_prod.get_image(event_balanced, [5, 6])
+
+    # check value error is raised when image is not provided for plotting
+    with pytest.raises(ValueError):
+        image_invalid = plots.plot_y_phi()
+
     plots.plot_y_phi(image, products)
     plots.plot_y_phi(image_no_products)
 
