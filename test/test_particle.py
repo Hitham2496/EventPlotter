@@ -3,17 +3,14 @@ import numpy as np
 import pylorentz
 from EventPlotter import Particle
 
+
 A = Particle(21, status=-1, px=0, py=0, pz=200, e=200)
-
 B = Particle(12, status=-1, px=0, py=0, pz=-350, e=350)
-
 C = Particle(1, status=1, px=0, py=0, pz=-150, e=550, m=529.15)
-
 D = Particle(22, status=1, px=-2.026831e+01, py=-1.871849e+01,
              pz=-1.510034e+02, e=1.535032e+02, m=0.139)
-
-E = Particle(-11, status=1, px=-6.838323e+00, py=-3.602227e+02, 
-             pz=1.114048e+02, e=3.771183e+02, m=0.167) 
+E = Particle(-11, status=1, px=-6.838323e+00, py=-3.602227e+02,
+             pz=1.114048e+02, e=3.771183e+02, m=0.167)
 
 
 @pytest.mark.parametrize("part", [
@@ -42,21 +39,21 @@ def test_metadata(part: Particle, out_status: bool, is_parton: bool):
 def test_off_shell():
     # Test wrong masses
     with pytest.raises(ValueError):
-        F = Particle(-24, status=1, px=-6.838323e+00, py=-3.602227e+02, 
-                     pz=1.114048e+02, e=3.771183e+02, m=68.432)
+        F = Particle(-24, status=1, px=-6.838323e+00, py=-3.602227e+02,
+                     pz=1.114048e+02, e=3.771183e+02, m=68.432)  # noqa: F841
 
     with pytest.raises(ValueError):
-        G = Particle(21, status=1, px=0, py=0, pz=-150, e=550, m=29.15) 
+        F = Particle(21, status=1, px=0, py=0, pz=-150, e=550, m=29.15)  # noqa: F841
 
     # Test momentum outside of tolerance for zero mass
     with pytest.raises(ValueError):
-        H = Particle(-21, status=1, px=-6.838323e+00, py=-3.602227e+02, 
-                     pz=1.114048e+02, e=3.871183e+02, m=0.)
+        F = Particle(-21, status=1, px=-6.838323e+00, py=-3.602227e+02,
+                     pz=1.114048e+02, e=3.871183e+02, m=0.)  # noqa: F841
 
     # Test negative mass input
     with pytest.raises(ValueError):
-        I = Particle(-21, status=1, px=-6.838323e+00, py=-3.602227e+02, 
-                     pz=1.114048e+02, e=3.871183e+02, m=-10.)
+        F = Particle(-21, status=1, px=-6.838323e+00, py=-3.602227e+02,
+                     pz=1.114048e+02, e=3.871183e+02, m=-10.)  # noqa: F841
 
 
 @pytest.mark.parametrize("part", [
