@@ -27,6 +27,10 @@ jobs:
         python -m pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
+    - name: Install latex
+      run: |
+          sudo apt update
+          xargs -a texlive-xetex sudo apt install -y
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
