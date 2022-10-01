@@ -28,6 +28,7 @@ class ReaderLHEF(Reader):
     def read_next(self, verbose: bool = False):
         return 0
 
+
 class ReaderPythia(Reader):
 
     def read_next(self, verbose: bool = False):

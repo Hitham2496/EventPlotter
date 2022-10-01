@@ -1,21 +1,20 @@
 import matplotlib.pyplot as plt
 from matplotlib import cm
-from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+from matplotlib.colors import ListedColormap
 import numpy as np
 from typing import Tuple
-from .particle import Particle
 from .event import Event
-from .utils import *
-import sys
+from .utils import is_number
+
 
 class Plotter():
 
     def __init__(
                  self,
-                 rap_extent: Tuple[float, float] = (-7,7),
-                 phi_extent: Tuple[float, float] = (-3.14,3.14),
+                 rap_extent: Tuple[float, float] = (-7, 7),
+                 phi_extent: Tuple[float, float] = (-3.14, 3.14),
                  bins: int = 50,
-                 chosen_map: str = "YlOrRd",
+                 chosen_map: str = r"YlOrRd",
                  min_val: int = 1,
                  custom_z_axis = None,
                  z_label: str = r"$p_\perp \quad [\textrm{GeV}]$",
@@ -32,7 +31,7 @@ class Plotter():
             custom_z_axis: optional, Callable function of Particle objetc to use as
                            the z-axis of the 3d plot, by default the pT of the
                            particle is used.
-            z_label: custom label for the z-axis, by default set to $p_\perp$
+            z_label: custom label for the z-axis
             include_weight: whether to multiply the z-axis value by the event
                             weight
         """
@@ -43,11 +42,10 @@ class Plotter():
             else:
                 for bound in rap_extent:
                     if (not is_number(bound)):
-                        raise(TypeError("Rapidity bounds must be float or int")) 
+                        raise(TypeError("Rapidity bounds must be float or int"))
             self.rap_extent = sorted(rap_extent)
         else:
             raise(TypeError("Rapidity extent must be 2 component array-like"))
-
 
         # check phi extent is valid
         if (isinstance(phi_extent, list) or isinstance(phi_extent, Tuple)):
@@ -84,12 +82,11 @@ class Plotter():
 
         self.bins = int(bins)
         self.z_func = custom_z_axis
-        self.z_label = z_label 
+        self.z_label = z_label
         self.include_wgt = include_wgt
         self.get_colormap(chosen_map, min_val)
 
-
-    def get_colormap(self, chosen_map: str="YlOrRd", min_val: int=1):
+    def get_colormap(self, chosen_map: str = "YlOrRd", min_val: int = 1):
         """
         Sets a chosen color map for the z-axis with all values beneath
         min_val/256 as white. Can be called again with new arguments
@@ -103,7 +100,6 @@ class Plotter():
         white = np.array([256/256, 256/256, 256/256, 1])
         new_colors[:int(min_val), :] = white
         self.color_map = ListedColormap(new_colors)
-
 
     def get_image(self, event: Event = None, idx_products = None):
         """
@@ -124,8 +120,7 @@ class Plotter():
                     y_phi.append([idx, p.rap(), p.phi(), fill_val])
         else:
             for idx, p in enumerate(event.particles):
-                if (p.is_final() and p.is_parton()
-                    and (idx not in idx_products)):
+                if (p.is_final() and p.is_parton() and (idx not in idx_products)):
                     fill_val = self.z_func(p) if (self.z_func) else p.perp()
                     if (not is_number(fill_val)):
                         raise(TypeError("custom z function must return a float or int"))
@@ -138,11 +133,11 @@ class Plotter():
 
         for j, part in enumerate(y_phi):
             phi = np.abs(np.linspace(self.phi_extent[0], self.phi_extent[1],
-                       self.bins) - part[2]).argmin()
+                         self.bins) - part[2]).argmin()
             rap = np.abs(np.linspace(self.rap_extent[0], self.rap_extent[1],
-                       self.bins) - part[1]).argmin()
+                         self.bins) - part[1]).argmin()
             if ((part[1] > self.rap_extent[0] and part[1] < self.rap_extent[1])
-                and (part[2] > self.phi_extent[0] and part[2] < self.phi_extent[1])):
+                and (part[2] > self.phi_extent[0] and part[2] < self.phi_extent[1])):  # noqa: E129
                 image[phi, rap] += part[3]
 
         if (idx_products):
@@ -158,9 +153,7 @@ class Plotter():
             y_phi_products.sort(key = lambda x: x[3])
             return image, y_phi_products
 
-
         return image
-
 
     def plot_y_phi(self, image = None, products = None, title: str = "event.pdf"):
         """
@@ -186,7 +179,7 @@ class Plotter():
         bar = plt.colorbar()
         if (products):
             for pt in products:
-                plt.scatter(pt[1], pt[2], c="black", marker='x')
+                plt.scatter(pt[1], pt[2], c="black", marker="x")
                 plt.annotate(r"id="+str(round(np.abs(pt[0]))), (pt[1]+0.1, pt[2]+0.1))
         # bar.ax.yaxis.set_ticks([point[3] for point in y_phi], minor=True)
 
