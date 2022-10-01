@@ -14,7 +14,7 @@ class Particle():
             daughters: Tuple[int, int] = (0, 0),
             cols: Tuple[int, int] = (0, 0),
             px: float = 0., py: float = 0., pz: float = 0., e: float = 0.,
-            m: float = 0., check_on_shell: bool=True
+            m: float = 0., check_on_shell: bool = True
             ):
         """
         Initialise particle from provided data, most of which is optional.
