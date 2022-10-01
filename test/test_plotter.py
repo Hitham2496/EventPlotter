@@ -102,6 +102,6 @@ def test_get_image():
     with pytest.raises(ValueError):
         image_invalid = plots.plot_y_phi()
 
-    plots.plot_y_phi(image, products)
-    plots.plot_y_phi(image_no_products)
+    # plots.plot_y_phi(image, products)
+    # plots.plot_y_phi(image_no_products)
 
