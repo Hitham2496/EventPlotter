@@ -30,7 +30,13 @@ jobs:
     - name: Install latex
       run: |
           sudo apt update
-          sudo apt install -y texlive-xetex 
+          sudo apt install -y texlive-xetex \
+            texlive-pictures \
+            texlive-fonts-recommended \
+            texlive-latex-base \
+            texlive-latex-extra \
+            texlive-latex-recommended \
+            texlive-luatex \
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
