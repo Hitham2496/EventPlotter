@@ -1,6 +1,7 @@
 import numpy as np
 import pylorentz
 
+
 class Event():
 
     def __init__(
@@ -44,7 +45,6 @@ class Event():
             rep += "\n"+str(idx)+"\t"+str(p.pdg)+"\t"+str(p.status)+"\t("+str(p.px())
             rep += ",\t"+str(p.py())+",\t"+str(p.pz())+",\t"+str(p.e())+")"
         return rep
-
 
     def find_incoming(self):
         """
