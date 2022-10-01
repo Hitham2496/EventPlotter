@@ -38,7 +38,7 @@ def test_init__errors():
     with pytest.raises(TypeError):
         plotting_invalid_rap = Plotter(rap_extent=[4.5, 3.2, 2.1])
     with pytest.raises(TypeError):
-        plotting_invalid_rap = Plotter(rap_extent=[4.5, "test"])
+        plotting_invalid_rap = Plotter(rap_extent=[4.5, "test"])  # noqa: F841
     with pytest.raises(TypeError):
         plotting_invalid_phi = Plotter(phi_extent=3.1)
     with pytest.raises(TypeError):
@@ -58,7 +58,7 @@ def test_init__errors():
 
     # test value error for min_val
     with pytest.raises(ValueError):
-        plotting_invalid_phi = Plotter(min_val=-10)
+        plotting_invalid_phi = Plotter(min_val=-10)  # noqa: F841
 
     # test inappropriate colormap string
     with pytest.raises(TypeError):
@@ -70,12 +70,12 @@ def test_init__errors():
 
     # test inappropriate include_wgt
     with pytest.raises(TypeError):
-        plotting_invalid_bins = Plotter(include_wgt="True")
+        plotting_invalid_bins = Plotter(include_wgt="True")  # noqa: F841
 
 
 def test_get_image():
 
-    image, products = plots.get_image(event_balanced_beams, [7,8])
+    image, products = plots.get_image(event_balanced_beams, [7, 8])
     image_no_products = plots.get_image(event_balanced_beams)
     image_no_beams = plots.get_image(event_balanced)
 
@@ -90,18 +90,14 @@ def test_get_image():
 
     # check type error is raised for invalid z function values
     with pytest.raises(TypeError):
-        image_invalid = plots_invalid_func.get_image(event_balanced)
+        image_invalid = plots_invalid_func.get_image(event_balanced)  # noqa: F841
     with pytest.raises(TypeError):
-        image_invalid = plots_invalid_func.get_image(event_balanced, [5, 6])
+        image_invalid = plots_invalid_func.get_image(event_balanced, [5, 6])  # noqa: F841
 
     # check for an invalid z function that affects only the products
     with pytest.raises(TypeError):
-        image_invalid = plots_invalid_func_prod.get_image(event_balanced, [5, 6])
+        image_invalid = plots_invalid_func_prod.get_image(event_balanced, [5, 6])  # noqa: F841
 
     # check value error is raised when image is not provided for plotting
     with pytest.raises(ValueError):
-        image_invalid = plots.plot_y_phi()
-
-    # plots.plot_y_phi(image, products)
-    # plots.plot_y_phi(image_no_products)
-
+        image_invalid = plots.plot_y_phi()  # noqa: F841
