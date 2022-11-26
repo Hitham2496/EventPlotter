@@ -1,41 +1,44 @@
 import numpy as np
 import pylorentz
 from typing import Tuple
+from dataclasses import dataclass
 
-
+@dataclass
 class Particle():
+    """
+    Initialise particle from provided data, most of which is optional.
+        pdg: id of particle according to pdg database convention
+        status: status code of particle following the Pythia convention
+        mothers: tuple containing index of mother particles if applicable
+        daughters: tuple containing index of daughter particles if applicable
+        cols: tuple containing col,anticol values for partons if provided
+        px, py, pz, e: floats, momentum components for particles
+        m: float, mass of the particle, not as calculated from its momentum
+        check_on_shell: bool, whether to check if provided particle is on-shell
+    """
 
     # Review value of tolerance
     TOL = 1E-1
 
-    def __init__(
-            self, pdg: int = 0, status: int = 0,
-            mothers: Tuple[int, int] = (0, 0),
-            daughters: Tuple[int, int] = (0, 0),
-            cols: Tuple[int, int] = (0, 0),
-            px: float = 0., py: float = 0., pz: float = 0., e: float = 0.,
-            m: float = 0., check_on_shell: bool = True
-            ):
+    pdg: int = 0
+    status: int = 0
+    mothers: Tuple[int, int] = (0, 0)
+    daughters: Tuple[int, int] = (0, 0)
+    cols: Tuple[int, int] = (0, 0)
+    px: float = 0.
+    py: float = 0.
+    pz: float = 0.
+    e: float = 0.
+    m: float = 0.
+    check_on_shell: bool = True
+
+    def __post_init__(self):
         """
-        Initialise particle from provided data, most of which is optional.
-            pdg: id of particle according to pdg database convention
-            status: status code of particle following the Pythia convention
-            mothers: tuple containing index of mother particles if applicable
-            daughters: tuple containing index of daughter particles if applicable
-            cols: tuple containing col,anticol values for partons if provided
-            px, py, pz, e: floats, momentum components for particles
-            m: float, mass of the particle, not as calculated from its momentum
-            check_on_shell: bool, whether to check if provided particle is on-shell
+        Check on shell within tolerance TOL
         """
-        self.pdg = pdg
-        self.status = status
-        self.mothers = mothers
-        self.daughters = daughters
-        self.cols = cols
-        self.momentum = pylorentz.Momentum4(e, px, py, pz)
-        self.m = m
-        if (check_on_shell):
-            self.check_on_shell()
+        self.momentum = pylorentz.Momentum4(self.e, self.px, self.py, self.pz)
+        if (self.check_on_shell):
+            self.check_on_shell_particles()
 
     def momentum(self):
         """
@@ -76,25 +79,25 @@ class Particle():
         p = self.momentum
         return np.sqrt(p.p_x**2 + p.p_y**2)
 
-    def px(self):
+    def p_x(self):
         """
         Wrapper around p_x
         """
         return self.momentum.p_x
 
-    def py(self):
+    def p_y(self):
         """
         Wrapper around p_x
         """
         return self.momentum.p_y
 
-    def pz(self):
+    def p_z(self):
         """
         Wrapper around p_x
         """
         return self.momentum.p_z
 
-    def e(self):
+    def E(self):
         """
         Wrapper around p_x
         """
@@ -118,7 +121,7 @@ class Particle():
         """
         return (self.status < 0)
 
-    def check_on_shell(self):
+    def check_on_shell_particles(self):
         """
         Checks on-shellness of the particle compared to the init mass to
         within a tolerance set to 1E-3 by default.
