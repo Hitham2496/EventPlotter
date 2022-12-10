@@ -1,7 +1,12 @@
+#!/usr/bin/env python
+"""
+Particle class definition
+"""
 import numpy as np
 import pylorentz
 from typing import Tuple
 from dataclasses import dataclass
+
 
 @dataclass
 class Particle():

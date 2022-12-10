@@ -1,6 +1,11 @@
+#!/usr/bin/env python
+"""
+Event class definition
+"""
 import numpy as np
 import pylorentz
 from dataclasses import dataclass, field
+
 
 @dataclass
 class Event():
