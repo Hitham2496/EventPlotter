@@ -80,6 +80,7 @@ class Event():
                 self.beams = beams
                 self.incoming = incoming
                 return
+
         if (incoming[0] == -1 or incoming[1] == -1):
             raise(ValueError("One or more incoming particles was not found"))
 
