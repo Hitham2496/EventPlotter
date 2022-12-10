@@ -1,15 +1,18 @@
+#!/usr/bin/env python
 """
-
+Event file reader class definition
 """
+from .event import Event
+from .particle import Particle
+import xml.etree.ElementTree as ET
 
 
 class Reader():
 
-    def __enter__(self, filename: str):
+    def __init__(self, filename: str):
         """
         Initialises an event reader object from the event file `filename`.
         """
-        self.event_buffer = open(filename, 'r')
 
     def read_next(self, verbose: bool = False):
         """
@@ -18,15 +21,39 @@ class Reader():
 
     def __exit__(self):
         """
-        Closes the event file buffer on destruction.
+        Closes the event file buffer on destruction if needed.
         """
-        self.event_buffer.close()
 
 
 class ReaderLHEF(Reader):
 
+    def __init__(self, filename: str):
+        """
+        Initialises a LHE reader object from the event file `filename` ending in .lhe,
+        we use the xml implementation of the LHE format to simplify te implementation.
+        """
+        if not str(filename).endswith(".lhe"):
+            raise(ValueError("Event file must end with the .lhe extension."))
+
+        self.buffer = ET.iterparse(filename, events = ("start", "end") )
+        self.current_event = None
+
     def read_next(self, verbose: bool = False):
-        return 0
+        """
+        Advances the reader by one event.
+        """
+        xml_event = next(self.buffer)
+
+        while xml_event[1].tag != "event":
+            xml_event = next(self.buffer)
+
+        while not (xml_event[1].tag == "event" and xml_event[0] == "end"):
+            xml_event = next(self.buffer)
+
+        text_event = xml_event[1].text.strip().split("\n")
+        print(text_event)
+
+
 
 
 class ReaderPythia(Reader):
