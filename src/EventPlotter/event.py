@@ -52,7 +52,6 @@ class Event():
             rep += "\n"
             rep += "{:<4}\t{:<4}\t{:<2}\t({:<12}\t".format(idx, p.pdg, p.status, p.p_x())
             rep += "{:<12}\t{:<12}\t{:<12})".format(p.p_y(), p.p_z(), p.E())
-#            rep += ",\t"+str(p.p_y())+",\t"+str(p.p_z())+",\t"+str(p.E())+")"
         return rep
 
     def find_incoming(self):
