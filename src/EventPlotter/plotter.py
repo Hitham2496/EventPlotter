@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+"""
+Plotter class definition.
+"""
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import ListedColormap
