@@ -70,7 +70,7 @@ class ReaderLHEF(Reader):
 
         # Add particles to event container, starting with system and beams
         parts = []
-        parts.append(Particle(status=-1))
+        parts.append(Particle())
         parts.append(self.beams[0])
         parts.append(self.beams[1])
         for idx, line in enumerate(text_event[1:]):
