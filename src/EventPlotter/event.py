@@ -49,8 +49,8 @@ class Event():
         rep += "\nno.\tid\tstatus\tmomentum (px, py, pz, e)"
         for idx, p in enumerate(self.particles):
             rep += "\n"
-            rep += "{:<4}\t{:<4}\t{:<2}\t({:<12}\t".format(idx, p.pdg, p.status, p.p_x())
-            rep += "{:<12}\t{:<12}\t{:<12})".format(p.p_y(), p.p_z(), p.E())
+            rep += "{:<4}\t{:<4}\t{:<2}\t({:<18}\t".format(idx, p.pdg, p.status, p.p_x())
+            rep += "{:<18}\t{:<18}\t{:<18})".format(p.p_y(), p.p_z(), p.E())
         return rep
 
     def find_incoming(self):
