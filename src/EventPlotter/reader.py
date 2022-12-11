@@ -27,7 +27,7 @@ class Reader():
 
 class ReaderLHEF(Reader):
 
-    def __init__(self, filename: str, wgt_idx: int = None):
+    def __init__(self, filename: str, wgt_idx: int=None):
         """
         Initialises a LHE reader object from the event file `filename` ending in .lhe,
         we use the xml implementation of the LHE format to simplify te implementation.
@@ -37,7 +37,7 @@ class ReaderLHEF(Reader):
         if not str(filename).endswith(".lhe"):
             raise(ValueError("Event file must end with the .lhe extension."))
 
-        self.buffer = ET.iterparse(filename, events = ("start", "end") )
+        self.buffer = ET.iterparse(filename, events=("start", "end"))
         self.current_event = None
         self.init_info = None
         self.wgt_idx = wgt_idx
@@ -68,58 +68,58 @@ class ReaderLHEF(Reader):
 
         text_event = xml_event[1].text.strip().split("\n")
 
-        parts = []
         # Add particles to event container, starting with system and beams
-        parts.append(Particle())#status=-1, e = self.init_info[2]+self.init_info[3]))
+        parts = []
+        parts.append(Particle(status=-1))
         parts.append(self.beams[0])
         parts.append(self.beams[1])
         for idx, line in enumerate(text_event[1:]):
             data = line.split()
-            parts.append(Particle(pdg = int(data[0]),
-                                  status = int(data[1]),
-                                  cols = (int(data[4]), int(data[5])),
-                                  px = float(data[6]),
-                                  py = float(data[7]),
-                                  pz = float(data[8]),
-                                  e = float(data[9]),
-                                  m = float(data[10]),
-                                  check_on_shell = False
+            parts.append(Particle(pdg=int(data[0]),
+                                  status=int(data[1]),
+                                  cols=(int(data[4]), int(data[5])),
+                                  px=float(data[6]),
+                                  py=float(data[7]),
+                                  pz=float(data[8]),
+                                  e=float(data[9]),
+                                  m=float(data[10]),
+                                  check_on_shell=False
                                   )
-                        )
+                         )
 
-        if not self.wgt_idx is None:
-            return Event(particles = parts,
-                         root_s = self.com_energy,
-                         set_info = False,
-                         wgt = wgts[self.wgt_idx]
-                        )
+        if self.wgt_idx is not None:
+            return Event(particles=parts,
+                         root_s=self.com_energy,
+                         set_info=False,
+                         wgt=wgts[self.wgt_idx]
+                         )
 
-        return Event(particles = parts, root_s = self.com_energy, set_info = False)
+        return Event(particles=parts, root_s=self.com_energy, set_info=False)
 
-    def set_init_info(self, info: str = None):
+    def set_init_info(self, info: str=None):
         """
         Set info from initialisation of LHE file incl. beams given
         the xml data in string format.
         """
         if self.init_info is None:
             init_info = [float(i) for i in info.strip().split("\n")[0].split()]
-            self.beams.append(Particle(pdg = int(init_info[0]),
-                                       status = -1,
-                                       pz = init_info[2],
-                                       e = init_info[2])
-                             )
-            self.beams.append(Particle(pdg = int(init_info[1]),
-                                       status = -1,
-                                       pz = -init_info[3],
-                                       e = init_info[3])
-                             )
+            self.beams.append(Particle(pdg=int(init_info[0]),
+                                       status=-1,
+                                       pz=init_info[2],
+                                       e=init_info[2])
+                              )
+            self.beams.append(Particle(pdg=int(init_info[1]),
+                                       status=-1,
+                                       pz=-init_info[3],
+                                       e=init_info[3])
+                              )
             self.com_energy = self.beams[0].E() + self.beams[1].E()
             self.init_info = init_info
 
 
 class ReaderPythia(Reader):
 
-    def read_next(self, verbose: bool = False):
+    def read_next(self):
         return 0
 #        particles = []
 #        with open(file_in) as fstream:
