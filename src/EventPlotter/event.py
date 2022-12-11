@@ -32,7 +32,6 @@ class Event():
     x_minus: float = 0.
     wgt: float = 1.
 
-
     def __post_init__(self):
         """
         Find incoming particles and set info if not provided in constructor.
