@@ -101,3 +101,4 @@ def test_get_image():
     # check value error is raised when image is not provided for plotting
     with pytest.raises(ValueError):
         image_invalid = plots.plot_y_phi()  # noqa: F841
+
