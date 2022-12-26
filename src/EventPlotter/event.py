@@ -25,6 +25,7 @@ class Event():
 
     particles: list = field(default_factory=list)
     root_s: float = 0.
+    
     mur: float = 0.
     muf: float = 0.
     set_info: bool = True
@@ -52,6 +53,24 @@ class Event():
             rep += "{:<4}\t{:<4}\t{:<2}\t({:<18}\t".format(idx, p.pdg, p.status, p.p_x())
             rep += "{:<18}\t{:<18}\t{:<18})".format(p.p_y(), p.p_z(), p.E())
         return rep
+
+    def __len__(self):
+        """
+        Access length of particle list.
+        """
+        return len(self.particles)
+
+    def __getitem__(self, idx):
+        """
+        Allow indexing of particles in event.
+        """
+        return self.particles[idx]
+
+    def __iter__(self):
+        """
+        Use iterator in event to yield from particle container.
+        """
+        yield from self.particles
 
     def find_incoming(self):
         """
