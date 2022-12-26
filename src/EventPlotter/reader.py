@@ -43,6 +43,11 @@ class ReaderLHEF(Reader):
         self.wgt_idx = wgt_idx
         self.beams = []
         self.com_energy = 0.
+        while not self.init_info:
+            tmp_xml_event = next(self.buffer)
+            if tmp_xml_event[1].tag == "init":
+                self.set_init_info(tmp_xml_event[1].text)
+
 
     def advance(self):
         """
