@@ -38,6 +38,4 @@ jobs:
     - name: Test with pytest
       run: |
         export PYTHONPATH=src
-        ls
-        echo $PWD
         python -m pytest --cov --cov-report=xml
