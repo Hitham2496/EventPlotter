@@ -44,11 +44,23 @@ class ReaderLHEF(Reader):
         self.beams = []
         self.com_energy = 0.
 
-    def read_next(self):
+    def advance(self):
+        """
+        Wrapper around next for event buffer
+        """
+        return next(self.buffer)
+
+    def __iter__(self):
+        """
+        Use instance of the class as a wrapper for interaction with the buffer
+        """
+        return self
+
+    def __next__(self):
         """
         Advances the reader by one event.
         """
-        xml_event = next(self.buffer)
+        xml_event = self.advance()
         wgts = None
 
         # Write initialisation information if provided in LHE file
@@ -56,7 +68,7 @@ class ReaderLHEF(Reader):
             if xml_event[0] == "end" and xml_event[1].tag == "init":
                 self.set_init_info(xml_event[1].text)
 
-            xml_event = next(self.buffer)
+            xml_event = self.advance()
 
         # Look only at events for event record
         while not (xml_event[1].tag == "event" and xml_event[0] == "end"):
@@ -64,7 +76,7 @@ class ReaderLHEF(Reader):
             if xml_event[1].tag == "weights" and xml_event[0] == "end":
                 wgts = [float(x) for x in xml_event[1].text.strip().split()]
 
-            xml_event = next(self.buffer)
+            xml_event = self.advance()
 
         text_event = xml_event[1].text.strip().split("\n")
 
@@ -115,30 +127,3 @@ class ReaderLHEF(Reader):
                               )
             self.com_energy = self.beams[0].E() + self.beams[1].E()
             self.init_info = init_info
-
-
-class ReaderPythia(Reader):
-
-    def read_next(self):
-        return 0
-#        particles = []
-#        with open(file_in) as fstream:
-#            for x in fstream.readlines():
-#                if (len(x) > 2 and x[-2] != "-"):
-#                    info = x.split()
-#                    if (info[0] != "no" and info[0] != "Charge"):
-#                        tmp = particle.Particle(int(info[1]), int(info[3]),
-#                                                (int(info[4]), int(info[5])),
-#                                                (int(info[6]), int(info[7])),
-#                                                (int(info[8]), int(info[9])),
-#                                                float(info[10]), float(info[11]),
-#                                                float(info[12]), float(info[13]),
-#                                                float(info[14]))
-#                        particles.append(tmp)
-#
-#        if (verbose):
-#            for idx, p in enumerate(particles):
-#                print(idx, p.pdg, p.status, p.mothers, p.daughters, p.cols,
-#                      p.momentum, p.m)
-#
-#        return event.Event(particles, 7000)
