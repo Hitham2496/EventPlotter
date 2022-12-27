@@ -19,7 +19,7 @@ event_balanced_beams = Event([p1, p2, A, B, C, D, E, F, G], 7000)
 event_balanced = Event([A, B, C, D, E, F, G], 7000)
 
 plots = Plotter(rap_extent=[-4.5, 4.5], bins=50, chosen_map="cividis",
-                custom_z_axis=lambda part: part.e(),
+                custom_z_axis=lambda part: part.E(),
                 z_label=r"$E/p_\perp$", include_wgt=True)
 
 plots_invalid_func = Plotter(rap_extent=[-4.5, 4.5], bins=50, chosen_map="cividis",
@@ -101,3 +101,4 @@ def test_get_image():
     # check value error is raised when image is not provided for plotting
     with pytest.raises(ValueError):
         image_invalid = plots.plot_y_phi()  # noqa: F841
+

@@ -67,10 +67,10 @@ def test_momentum_wrapper(part: Particle):
 
     p = part.momentum
     assert isinstance(p, pylorentz.Momentum4)
-    assert part.e() == p.e
-    assert part.px() == p.p_x
-    assert part.py() == p.p_y
-    assert part.pz() == p.p_z
+    assert part.E() == p.e
+    assert part.p_x() == p.p_x
+    assert part.p_y() == p.p_y
+    assert part.p_z() == p.p_z
     assert part.phi() == p.phi
 
 
@@ -83,10 +83,10 @@ def test_momentum_wrapper(part: Particle):
 ])
 def test_rapidity(part: Particle, rap_control: float):
 
-    if (part.e() == part.pz()):
+    if (part.E() == part.p_z()):
         assert part.rap() == np.inf
 
-    if (part.e() == -part.pz()):
+    if (part.E() == -part.p_z()):
         assert part.rap() == -np.inf
 
     assert part.rap() == pytest.approx(rap_control, Particle.TOL)

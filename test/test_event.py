@@ -44,9 +44,21 @@ def test_reorder():
 
 
 def test_incoming():
-
     C_in = Particle(2, status=-1, px=125.233, py=40.134, pz=-315.891, e=342.17125, m=0.)
     D_in = Particle(21, status=-1, px=-0.469, py=1.953, pz=-4.284, e=4.731, m=0.)
     # test value error is raised for transverse incoming particles
     with pytest.raises(ValueError):
         ev_inc_only = Event([C_in, D_in, C, D], 7000.)  # noqa: F841
+
+
+def test_iterator():
+    particle_list = [p1, p2, A, B, C, D, E, F, G]
+    for idx, part in enumerate(event_balanced_beams):
+        assert part == particle_list[idx]
+        assert part == event_balanced_beams[idx]
+
+    ev_iter = iter(event_balanced_beams)
+    for idx in range(len((event_balanced_beams))):
+        assert next(ev_iter) == event_balanced_beams[idx]
+
+
