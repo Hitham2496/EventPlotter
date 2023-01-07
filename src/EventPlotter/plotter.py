@@ -12,6 +12,16 @@ from .utils import is_number
 
 
 class Plotter():
+    """
+    Plotting class for examining events from MC event generators.
+
+    Includes functionality to produce comprehensive 2D histograms
+    in the rapidity-azimuthal angle plane of scattering events in
+    the standard formats used by Monte Carlo event generators.
+
+    The option to plot with a custom measure in the z-azis is
+    provided with significant scope for user customisation.
+    """
 
     def __init__(
                  self,
@@ -25,19 +35,20 @@ class Plotter():
                  include_wgt: bool = False
                 ):
         """
-        Initialise Plotter class, arguments:
-            rap_extent: tuple for the limits along the rapidity axis.
-            phi_extent: tuple for the limits along the phi axis (-pi, pi).
-            bins: number of bins along each axis.
-            chosen_map: string denoting the matplotlib colour map to be used.
-            min_val: minimum value between 0 and 256 for colour map, beneath which
-                     the colour will be set as white.
-            custom_z_axis: optional, Callable function of Particle objetc to use as
-                           the z-axis of the 3d plot, by default the pT of the
-                           particle is used.
-            z_label: custom label for the z-axis
-            include_weight: whether to multiply the z-axis value by the event
-                            weight
+        Initialise Plotter class.
+
+        :param rap_extent: tuple for the limits along the rapidity axis.
+        :param phi_extent: tuple for the limits along the phi axis (-pi, pi).
+        :param bins: number of bins along each axis.
+        :param chosen_map: string denoting the matplotlib colour map to be used.
+        :param min_val: minimum value between 0 and 256 for colour map, beneath which
+               the colour will be set as white.
+        :param custom_z_axis: optional, Callable function of Particle objetc to use as
+               the z-axis of the 3d plot, by default the pT of the
+               particle is used.
+        :param z_label: custom label for the z-axis
+        :param include_weight: whether to multiply the z-axis value by the event
+               weight
         """
         # check rapidity extent is valid
         if (isinstance(rap_extent, list) or isinstance(rap_extent, Tuple)):
@@ -92,9 +103,13 @@ class Plotter():
 
     def get_colormap(self, chosen_map: str = "YlOrRd", min_val: int = 1):
         """
-        Sets a chosen color map for the z-axis with all values beneath
-        min_val/256 as white. Can be called again with new arguments
-        after initialisation for alteration.
+        Sets a chosen color map for the z-axis.
+
+        :param chosen_map: str referring to an in-built colormap.
+        :min_val: int value for which any color beneath min_val/256 is white.
+
+        Can be called again with new arguments after initialisation
+        for alteration.
         """
         if (min_val < 0 or min_val > 256):
             raise(ValueError("Minimum value in colormap must be between 0 and 256"))
@@ -107,11 +122,11 @@ class Plotter():
 
     def get_image(self, event: Event = None, idx_products = None):
         """
-        Returns a square numpy array of dimension bins*bins, populated with the
-        z-axis values corresponding to each point in rapidity-azimuthal angle
-        space. Option to provide an array or array-like container of indices for
-        decay products (or other particles not to be included in the heatmap)
-        as 'idx_products'.
+        Returns a square array populated with the z-axis values of the event.
+
+        :param event: Event provided to plot.
+        :param idx_products: optional array-like container for indices of
+               particles not to be included in the heat map.
         """
         y_phi = []
         if (not idx_products):
@@ -161,11 +176,12 @@ class Plotter():
 
     def plot_y_phi(self, image = None, products = None, title: str = "event.pdf"):
         """
-        Renders a square heatmap of the y-phi plane given:
-            image: a (bins x bins) dimensional numpy array
-            products: (optional) array-like container [id,y,phi,fill_value]
-                      for particles to be displayed as scatter points
-            title: title of the figure to be saved, by default 'event.pdf'
+        Renders a square heatmap of the y-phi plane.
+
+        :param image: a (bins x bins) dimensional numpy array
+        :param products: (optional) array-like container [id,y,phi,fill_value]
+               for particles to be displayed as scatter points
+        :param title: title of the figure to be saved, by default 'event.pdf'
         """
         if (image is None):
             raise(ValueError("Must provide an image to plot"))
