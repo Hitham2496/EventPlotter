@@ -149,7 +149,6 @@ class Plotter():
         y_phi.sort(key = lambda x: x[3])
 
         image = np.zeros((self.bins, self.bins))
-
         for j, part in enumerate(y_phi):
             phi = np.abs(np.linspace(self.phi_extent[0], self.phi_extent[1],
                          self.bins) - part[2]).argmin()
