@@ -120,6 +120,7 @@ class ReaderLHEF(Reader):
     def set_init_info(self, info: str=None):
         """
         Set info from initialisation of LHE file.
+
         :param info: str, the xml data in string format.
         """
         if self.init_info is None:
