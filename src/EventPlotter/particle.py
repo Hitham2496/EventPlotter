@@ -93,19 +93,19 @@ class Particle():
 
     def p_y(self):
         """
-        Wrapper around p_x
+        Wrapper around p_y
         """
         return self.momentum.p_y
 
     def p_z(self):
         """
-        Wrapper around p_x
+        Wrapper around p_z
         """
         return self.momentum.p_z
 
     def E(self):
         """
-        Wrapper around p_x
+        Wrapper around e
         """
         return self.momentum.e
 
