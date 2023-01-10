@@ -154,3 +154,9 @@ algorithms on a starting configuration.
 
 The input configuration is shown on the top, and the average evolved configuration is
 shown on the bottom.
+
+API Reference
+============
+
+More complete documentation of the specific implementation of the package can be found
+in the API reference, from the left-hand tab.
