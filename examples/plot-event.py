@@ -7,6 +7,7 @@ The LHE file used may be found in the `test` directory.
 from EventPlotter import Particle, Event, Plotter, ReaderLHEF
 import os
 
+
 def energy_over_perp(particle):
     """
     Calculates energy of particle divided by its
