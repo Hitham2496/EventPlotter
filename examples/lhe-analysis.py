@@ -57,5 +57,5 @@ def main(filename):
 
 if __name__ == """__main__""":
     os.system("gunzip ../test/HEJFOG.lhe.gz")
-    main("../HEJFOG.lhe")
+    main("../test/HEJFOG.lhe")
     os.system("gzip ../test/HEJFOG.lhe")
