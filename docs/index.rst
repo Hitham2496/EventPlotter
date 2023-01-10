@@ -21,6 +21,12 @@ histogram for a W boson produced with five jets at the LHC.
    :alt: Shower-evolved W+5j event
    :align: center
 
+
+Additionally, the event file reader functionality of the package enables the
+user to perform robust and comprehensive analyses of large samples of events
+in the standard Les Houches Event `LHE <https://inspirehep.net/literature/725284>`_
+format.
+
 The code is hosted on `GitHub <https://github.com/Hitham2496/EventPlotter/>`_
 where issues may be raised. I hope to publish the package to PyPI in early 2023.
 

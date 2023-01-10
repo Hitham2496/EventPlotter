@@ -21,6 +21,7 @@ extensions = [
 ]
 autoapi_dirs = ["../src"]  # location to parse for API reference
 
+html_favicon = '_static/_img/favicon.ico'
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
