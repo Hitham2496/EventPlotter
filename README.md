@@ -37,8 +37,6 @@ The package can be imported into python scripts and notebooks as normal e.g.
 ```
 #!/usr/bin/env python3
 import EventPlotter as ep
-
-part = ep.Particle(2, status=1, px=125.233, py=40.134, pz=-315.891, e=342.17125, m=0.)
 ```
 Consult the API reference in the documentation for detailed documentation of the package
 functionality available.
