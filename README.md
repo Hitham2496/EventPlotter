@@ -23,8 +23,8 @@ $ pip install -e . --user
 ```
 Sphinx documentation can be produced with:
 ```
-cd docs
-make [builder]
+$ cd docs
+$ make [builder]
 ```
 where [builder] can take any sphinx-compatible documentation builder format (e.g. html,
 latex ...).
