@@ -92,7 +92,7 @@ The script can be run with:
 This produces the following histogram:
 
 .. image:: _static/_img/ht-plot-example.png
-   :width: 500
+   :width: 400
    :alt: Histogram example
    :align: center
 
@@ -117,7 +117,13 @@ This module reads the first three events from the LHE file and plots the rapidty
 angle plane distribution of the particles in the event. The heatmap is filled according to
 the user-defined function 'energy_over_perp' (line 11).
 
-This produces three figures in the 'examples' directory corresponding to the plots.
+Running:
+
+.. code-block:: bash
+
+   $ python plot-event.py
+
+produces three figures in the 'examples' directory corresponding to the plots.
 
 Again, the implementation above is severely limited but the scope of its applicability is
 clearly vast. I have made use of this module to examine individual Monte Carlo events at
@@ -144,11 +150,11 @@ evolution on a single event many times, to calculate the overall effect of the e
 algorithms on a starting configuration.
 
 .. image:: _static/_img/input_wm_5j.png
-   :width: 500
+   :width: 400
    :alt: Input W+5j event
    :align: center
 .. image:: _static/_img/output_wm_5j.png
-   :width: 500
+   :width: 400
    :alt: Average shower-evolved W+5j event
    :align: center
 

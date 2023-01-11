@@ -32,25 +32,25 @@ to use the module clone the repository with either:
 
 .. code-block:: bash
 
-   git clone git@github.com:Hitham2496/EventPlotter.git
+   $ git clone git@github.com:Hitham2496/EventPlotter.git
 
 Or, if you have not configured your GitHub account with a SSH key:
 
 .. code-block:: bash
 
-   git clone https://github.com/Hitham2496/EventPlotter.git
+   $ git clone https://github.com/Hitham2496/EventPlotter.git
 
 Navigate to the directory created and install the package with:
 
 .. code-block:: bash
 
-   python setup.py install --user
+   $ python setup.py install --user
 
 Or, to use your code in your local environment
 
 .. code-block:: bash
 
-   pip install --user -e .
+   $ pip install --user -e .
 
 This will enable you to use the module via importing as usual in your python scripts
 and notebooks:
@@ -76,4 +76,4 @@ You can test your installation with:
 
 .. code-block:: bash
 
-   python -m pytest
+   $ python -m pytest
