@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Event file reader class definition
+Event file reader class definition.
 """
 from .event import Event
 from .particle import Particle
@@ -8,6 +8,9 @@ import xml.etree.ElementTree as ET
 
 
 class Reader():
+    """
+    Bare reader class to allow custom derived classes for new formats.
+    """
 
     def __init__(self, filename: str):
         """
@@ -29,10 +32,11 @@ class ReaderLHEF(Reader):
 
     def __init__(self, filename: str, wgt_idx: int=None):
         """
-        Initialises a LHE reader object from the event file `filename` ending in .lhe,
-        we use the xml implementation of the LHE format to simplify te implementation.
-        Optionally add a weight index to initialise the events with weights as provided
-        in the file.
+        Initialises a LHE reader object from the event file `filename` ending in .lhe.
+
+        We use the xml implementation of the LHE format to simplify the implementation.
+        :param filename: str name of event file.
+        :param wgt_idx: optional int indexing which weight to save.
         """
         if not str(filename).endswith(".lhe"):
             raise(ValueError("Event file must end with the .lhe extension."))
@@ -115,8 +119,9 @@ class ReaderLHEF(Reader):
 
     def set_init_info(self, info: str=None):
         """
-        Set info from initialisation of LHE file incl. beams given
-        the xml data in string format.
+        Set info from initialisation of LHE file.
+
+        :param info: str, the xml data in string format.
         """
         if self.init_info is None:
             init_info = [float(i) for i in info.strip().split("\n")[0].split()]

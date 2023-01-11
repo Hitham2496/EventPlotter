@@ -12,14 +12,15 @@ from dataclasses import dataclass
 class Particle():
     """
     Initialise particle from provided data, most of which is optional.
-        pdg: id of particle according to pdg database convention
-        status: status code of particle following the Pythia convention
-        mothers: tuple containing index of mother particles if applicable
-        daughters: tuple containing index of daughter particles if applicable
-        cols: tuple containing col,anticol values for partons if provided
-        px, py, pz, e: floats, momentum components for particles
-        m: float, mass of the particle, not as calculated from its momentum
-        check_on_shell: bool, whether to check if provided particle is on-shell
+
+    :param pdg: int id of particle according to pdg database convention
+    :param status: status code of particle following the Pythia convention
+    :param mothers: tuple containing index of mother particles if applicable
+    :param daughters: tuple containing index of daughter particles if applicable
+    :param cols: tuple containing col,anticol values for partons if provided
+    :param px, py, pz, e: floats, momentum components for particles
+    :param m: float, mass of the particle, not as calculated from its momentum
+    :param check_on_shell: bool, whether to check if provided particle is on-shell
     """
 
     # Review value of tolerance
@@ -39,7 +40,7 @@ class Particle():
 
     def __post_init__(self):
         """
-        Check on shell within tolerance TOL
+        Check on shell within tolerance TOL.
         """
         self.momentum = pylorentz.Momentum4(self.e, self.px, self.py, self.pz)
         if (self.check_on_shell):
@@ -92,19 +93,19 @@ class Particle():
 
     def p_y(self):
         """
-        Wrapper around p_x
+        Wrapper around p_y
         """
         return self.momentum.p_y
 
     def p_z(self):
         """
-        Wrapper around p_x
+        Wrapper around p_z
         """
         return self.momentum.p_z
 
     def E(self):
         """
-        Wrapper around p_x
+        Wrapper around e
         """
         return self.momentum.e
 
@@ -128,8 +129,7 @@ class Particle():
 
     def check_on_shell_particles(self):
         """
-        Checks on-shellness of the particle compared to the init mass to
-        within a tolerance set to 1E-3 by default.
+        Checks on-shellness of the particle compared to the init mass.
         """
         calc = self.m_calc()
 

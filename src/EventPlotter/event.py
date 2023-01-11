@@ -10,17 +10,17 @@ from dataclasses import dataclass, field
 @dataclass
 class Event():
     """
-    Saves information of particles in an event and sets
-    additional information of event by default. Arguments:
-        particles: array-like container of EventPlotter Particles
-        root_s: float, sqrt CoM energy of interaction
-        mur: float, renormalisation scale
-        muf: float, factorisation scale
-        set_info: bool, sets the x+/- values of the incoming particles and
-                  the CoM energy of the hard interaction
-        x_plus: float, x value of +z incoming particle
-        x_minus: float, x value of -z incoming particle
-        wgt: float, event weight
+    Saves information of particles in an event.
+
+    :param particles: array-like container of EventPlotter Particles
+    :param root_s: float, sqrt CoM energy of interaction
+    :param mur: float, renormalisation scale
+    :param muf: float, factorisation scale
+    :param set_info: bool, sets the x+/- values of the incoming particles and
+           the CoM energy of the hard interaction
+    :param x_plus: float, x value of +z incoming particle
+    :param x_minus: float, x value of -z incoming particle
+    :param wgt: float, event weight
     """
 
     particles: list = field(default_factory=list)
@@ -104,9 +104,13 @@ class Event():
 
     def setup(self):
         """
-        Calculates global quantities of event including:
-        centre of mass energy, pdf energy fractions. This
-        method should be called if any modification to the
+        Calculates global quantities of event.
+
+        Quantities calculated include:
+        * centre of mass energy
+        * pdf energy fractions
+
+        This method should be called if any modification to the
         particle content has been applied after init.
         """
         self.root_s_hat = self.calc_root_s_hat()
@@ -129,9 +133,11 @@ class Event():
 
     def calc_x(self, direction: int):
         """
-        Calculates the x value for each particle incoming along the beam axis,
-        admits the direction (+1 for positive z, -1 for negative z) as a
-        parameter. Assumes equal energy beams.
+        Calculates the x value for each particle incoming along the beam axis.
+        
+        :param direction: int +1 for positive z, -1 for negative z
+        
+        Assumes equal energy beams.
         """
         inc = self.incoming
         if (direction == 1):
@@ -144,8 +150,9 @@ class Event():
 
     def check_momentum(self, tol: float = 1E-2):
         """
-        Checks momentum conservation in the event to within a tolerance set to
-        1E-2 by default.
+        Checks momentum conservation in the event to within a tolerance.
+
+        :param tol: float tolerance of output, by default 1E-2
         """
         inc = self.incoming
         EPS = 1E-2
