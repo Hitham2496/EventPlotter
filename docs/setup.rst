@@ -23,6 +23,7 @@ installed.
 
 - `dataclasses <https://docs.python.org/3/library/dataclasses.html#module-dataclasses>`_ (>0.4) for event and particle classes.
 
+These are listed in 'requirements.txt' in the base directory of the repository.
 
 Installation
 ============
