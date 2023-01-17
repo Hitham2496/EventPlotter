@@ -51,12 +51,10 @@ symmetric as is the case at the LHC) and an optional weight.
 
 Events can be indexed to return the corresponding particle in the container.
 
-The Plotter class can be used to produce heatmaps (i.e. 2D histograms) for event
-configurations.
-
 The module itself is not designed to construct such events (though it does lend
 itself to such an application and can easily be integrated into a Monte Carlo event
-generator), and is intended to be used as an analysis tool for existing events.
+generator), and is intended to be used as an analysis tool for existing events, such
+as the 2D histogram plots outlined earlier.
 
 The Reader classes allow for the smooth reading and conversion of events in standard
 formats to the formats used by the module. Events in the xml-based Les Houches format
