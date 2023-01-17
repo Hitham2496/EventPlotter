@@ -51,3 +51,11 @@ Unit tests are provided with the package, and can be executed with
 ```
 $ python -m pytest
 ```
+
+## Development Philosophy
+
+The entire commit history and branches created to address issues are both retained for
+full transparency and ease of review to e.g. isolate issues that arise.
+
+Issues are logged under the `Issues` tab and addressed with each a dedicated branch
+and pull request.
