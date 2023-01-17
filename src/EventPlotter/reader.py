@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 
 class Reader():
     """
-    Bare reader class to allow custom derived classes for new formats.
+    Minimal reader class to allow custom derived classes for new formats.
     """
 
     def __init__(self, filename: str):
@@ -17,10 +17,16 @@ class Reader():
         Initialises an event reader object from the event file `filename`.
         """
 
-    def read_next(self):
+    def __next__(self):
         """
         Advances the reader by one event.
         """
+
+    def __iter__(self):
+        """
+        Use instance of the class as a wrapper for interaction with the buffer
+        """
+        return self
 
     def __exit__(self):
         """
@@ -29,6 +35,9 @@ class Reader():
 
 
 class ReaderLHEF(Reader):
+    """
+    Derived reader class for LHE formatted event input.
+    """
 
     def __init__(self, filename: str, wgt_idx: int=None):
         """
