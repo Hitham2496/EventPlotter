@@ -38,7 +38,7 @@ The package can be imported into python scripts and notebooks as normal e.g.
 #!/usr/bin/env python3
 import EventPlotter as ep
 ```
-Consult the API reference in the documentation for detailed documentation of the package
+Consult the API reference in the documentation for detailed listings of the package
 functionality available.
 
 Several examples are provided in `EventPlotter/examples` highlighting different methods
@@ -59,3 +59,9 @@ full transparency and ease of review to e.g. isolate issues that arise.
 
 Issues are logged under the `Issues` tab and addressed with each a dedicated branch
 and pull request.
+
+Branches for feature development are denoted with the prefix `dev-` while those addressing
+bugs start with the prefix `bug-`
+
+The development is guided by unit-testing at all stages to streamline the production of
+high quality code.
