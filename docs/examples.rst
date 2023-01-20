@@ -121,13 +121,23 @@ Running:
 
    $ python plot-event.py
 
-produces three figures in the 'examples' directory corresponding to the plots.
+produces three figures in the 'examples' directory corresponding to the plots. One of these
+is shown below.
+
+.. image:: _static/_img/event-1.png
+   :width: 400
+   :alt: Input W+5j event
+   :align: center
 
 Again, the implementation above is severely limited but the scope of its applicability is
 clearly vast. I have made use of this module to examine individual Monte Carlo events at
 different stages of *parton shower* evolution (i.e. when the particles in the final state of
 an event split, producing more particles) to explore how different algorithms produce
 different distributions in this plane.
+
+
+Expanding on 2D Histogram Functionality
+=======================================
 
 Additionally, with some pre-processing, this functionality can allow one to produce the
 averages of events in a sample e.g.:
