@@ -8,6 +8,10 @@
 `EventPlotter` is a python3 package designed for robust and efficient analysis of events
 in high energy physics simulations of particle collisions.
 
+This allows for the swift and comprehensive analysis of the **complex data structures**
+which are events in HEP, **simplifying the data** and allowing for a wide range of
+studies to be performed on simulated events.
+
 The required packages to install `EventPlotter` may be found in `requirements.txt`.
 
 After cloning the repository, there should be a directory named `EventPlotter` present
