@@ -122,7 +122,8 @@ Running:
    $ python plot-event.py
 
 produces three figures in the 'examples' directory corresponding to the plots. One of these
-is shown below.
+is shown below. If the title is not given to the plotting method as an argument, the figures
+are shown instead of being written.
 
 .. image:: _static/_img/event-1.png
    :width: 400
