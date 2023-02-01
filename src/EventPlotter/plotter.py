@@ -173,16 +173,17 @@ class Plotter():
 
         return image
 
-    def plot_y_phi(self, image = None, products = None, title: str = "event.pdf"):
+    def plot_y_phi(self, image = None, products = None, title: str = None):
         """
         Renders a square heatmap of the y-phi plane.
 
         :param image: a (bins x bins) dimensional numpy array
         :param products: (optional) array-like container [id,y,phi,fill_value]
                for particles to be displayed as scatter points
-        :param title: title of the figure to be saved, by default 'event.pdf'
+        :param title: title of the figure to be saved, if not specified the figure
+               will not be saved.
         """
-        if (image is None):
+        if image is None:
             raise(ValueError("Must provide an image to plot"))
         plt.rc('text', usetex=True)
         plt.rc('font', family='serif')
@@ -196,13 +197,15 @@ class Plotter():
                            self.phi_extent[1]], cmap=self.color_map)
 
         bar = plt.colorbar()
-        if (products):
+        if products:
             for pt in products:
                 plt.scatter(pt[1], pt[2], c="black", marker="x")
                 plt.annotate(r"id="+str(round(np.abs(pt[0]))), (pt[1]+0.1, pt[2]+0.1))
-        # bar.ax.yaxis.set_ticks([point[3] for point in y_phi], minor=True)
 
         bar.set_label(self.z_label)
-        plt.savefig(title, bbox_inches='tight')
+        if title is None:
+            plt.show()
+        else:
+            plt.savefig(title, bbox_inches='tight')
         plt.clf()
         return image
