@@ -32,11 +32,9 @@ where issues may be raised. I hope to publish the package to PyPI in early 2023.
 
 Authors
 =======
-This code has been contributed to by the authors listed below, and was developed
-during postgraduate research at the `IPPP <https://www.ippp.dur.ac.uk/>`_, Durham
-University.
-
-`Hitham Hassan <https://github.com/Hitham2496/>`_
+This code has been contributed to by `Hitham Hassan <https://github.com/Hitham2496/>`_
+and was developed alongside my postgraduate research at the
+`IPPP <https://www.ippp.dur.ac.uk/>`_, Durham University.
 
 .. toctree::
    :maxdepth: 3
