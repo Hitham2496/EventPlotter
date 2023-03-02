@@ -200,7 +200,7 @@ class Plotter():
         if products:
             for pt in products:
                 plt.scatter(pt[1], pt[2], c="black", marker="x")
-                plt.annotate(r"id="+str(round(np.abs(pt[0]))), (pt[1]+0.1, pt[2]+0.1))
+                plt.annotate(r"id="+str(round(pt[0])), (pt[1]+0.1, pt[2]+0.1))
 
         bar.set_label(self.z_label)
         if title is None:
