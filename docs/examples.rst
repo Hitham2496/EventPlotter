@@ -146,12 +146,15 @@ averages of events in a sample e.g.:
 .. code-block:: python
 
    ...
+   plots = Plotter()
+
    img = np.zeros((50, 50))
    for ev in events:
-       l = get_image(ev)
-       img += get_image(ev)/np.sum(l)
+       raw_image = plots.get_image(ev)
+       norm = np.sum(raw_image)
+       img += raw_image / norm
 
-   img /= len(evolved_events)
+   img /= len(events)
    ...
 
 Such functionality has been used to yield the average result of running *parton shower*
