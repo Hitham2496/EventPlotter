@@ -106,7 +106,7 @@ class ReaderLHEF(Reader):
         for idx, line in enumerate(text_event[1:]):
             data = line.split()
             parts.append(Particle(pdg=int(data[0]),
-                                  status=int(data[1]),
+                                  status=self.convert_status(int(data[1])),
                                   cols=(int(data[4]), int(data[5])),
                                   px=float(data[6]),
                                   py=float(data[7]),
@@ -125,6 +125,21 @@ class ReaderLHEF(Reader):
                          )
 
         return Event(particles=parts, root_s=self.com_energy, set_info=False)
+
+    def convert_status(self, lhe_status: int):
+        """
+        Convert LHE status codes to Pythia-friendly format.
+
+        :param lhe_status: int, status in LHE format.
+        """
+        if lhe_status == -1:
+            return -21
+        elif lhe_status == 2:
+            return -22
+        elif lhe_status == 1:
+            return 23
+        else:
+            return lhe_status
 
     def set_init_info(self, info: str=None):
         """
