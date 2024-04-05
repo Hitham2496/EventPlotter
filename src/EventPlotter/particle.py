@@ -50,7 +50,7 @@ class Particle():
         """
         Returns the momentum of the particle.
         """
-        return pyLorentz.Momentum4(self.e, self.px, self.py, self.pz)
+        return pylorentz.Momentum4(self.e, self.px, self.py, self.pz)
 
     def m_calc(self):
         """
