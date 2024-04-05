@@ -50,7 +50,7 @@ class Particle():
         """
         Returns the momentum of the particle.
         """
-        return self.momentum
+        return pyLorentz.Momentum4(self.e, self.px, self.py, self.pz)
 
     def m_calc(self):
         """
@@ -87,27 +87,27 @@ class Particle():
 
     def p_x(self):
         """
-        Wrapper around p_x
+        Return px
         """
-        return self.momentum.p_x
+        return self.px
 
     def p_y(self):
         """
-        Wrapper around p_y
+        Return py
         """
-        return self.momentum.p_y
+        return self.py
 
     def p_z(self):
         """
-        Wrapper around p_z
+        Return pz
         """
-        return self.momentum.p_z
+        return self.pz
 
     def E(self):
         """
-        Wrapper around e
+        Return e
         """
-        return self.momentum.e
+        return self.e
 
     def is_parton(self):
         """
