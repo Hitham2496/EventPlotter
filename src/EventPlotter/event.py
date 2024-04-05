@@ -66,6 +66,12 @@ class Event():
         """
         return self.particles[idx]
 
+    def __setitem__(self, idx, val):
+        """
+        Allow indexing of particles in event.
+        """
+        self.particles[idx] = val
+
     def __iter__(self):
         """
         Use iterator in event to yield from particle container.
