@@ -52,8 +52,8 @@ section of the documentation.
 ## Testing
 
 Unit tests are provided with the package, and can be executed with
-```python
-$ python -m pytest
+```bash
+python -m pytest
 ```
 
 ## Development Philosophy
