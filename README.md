@@ -18,17 +18,17 @@ After cloning the repository, there should be a directory named `EventPlotter` p
 in your current working directory, navigate to this directory.
 
 The package can then be installed by:
-```
-$ python3 setup.py install --user 
+```bash
+python3 setup.py install --user 
 ```
 or, as a package to your local environment with `pip`:
-```
-$ pip install -e . --user
+```bash
+pip install -e . --user
 ```
 Sphinx documentation can be produced with:
-```
-$ cd docs
-$ make [builder]
+```bash
+cd docs
+make [builder]
 ```
 where [builder] can take any sphinx-compatible documentation builder format (e.g. html,
 latex ...).
@@ -38,7 +38,7 @@ This will build documentation in `EventPlotter/docs/_build`.
 ## Usage
 
 The package can be imported into python scripts and notebooks as normal e.g.
-```
+```python
 #!/usr/bin/env python3
 import EventPlotter as ep
 ```
@@ -52,7 +52,7 @@ section of the documentation.
 ## Testing
 
 Unit tests are provided with the package, and can be executed with
-```
+```python
 $ python -m pytest
 ```
 
